@@ -16,7 +16,7 @@ function History(){
     },[loaded])
     return (
       <>
-        <header className="container none flex justify-between mb-5">
+        <header className="container none flex flex-column justify-between mb-5">
           <h2 className="pt-3 pl-3 mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl">History</h2>
           <div className="pt-2 pr-2 text-4xl " onClick={()=> router.push('/Home')}> <ion-icon name="close-circle-outline"></ion-icon></div>
         </header>

@@ -29,7 +29,7 @@ function AddForm({handleModal}){
 
     const post =async () =>{
    
-        if(typeof userData.id != 'number'){
+        if(typeof userData.id != 'string'){
             alert("The user value is indefinido")
             return;
         }
@@ -37,7 +37,13 @@ function AddForm({handleModal}){
         setTransactioID(uuid())
         setUserID(userData.id)
         setDate(Date.now())
-        
+        console.log(transactionID) 
+        console.log(amount) 
+        console.log(categoryId) 
+        console.log(userID) 
+        console.log(date) 
+        console.log(porpuse) 
+        console.log(Type) 
         await postTransaction(transactionID,amount,categoryId,userID,date,porpuse,Type)
         handleModal();
     }

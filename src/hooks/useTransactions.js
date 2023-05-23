@@ -10,7 +10,7 @@ export default function useTransactions(){
     const [error,setError] = useState();
    
     const getTransactions = async (id) =>{
-      if(typeof id != 'number'){
+      if(typeof id != 'string'){
       return {Error: "The Id is undefied"}
       }else{
 
@@ -39,7 +39,7 @@ export default function useTransactions(){
     const postTransaction= async (transactionID,amount,categoryId,userID,date,porpuse,type) =>{
  
       try{
-        const responseCode = await fetch('https://localhost:7091/Transaction/create',{
+        const responseCode = await fetch(`https://localhost:7091/Transaction/create/${userID}`,{
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
@@ -61,6 +61,7 @@ export default function useTransactions(){
           throw new Error `Ha ocurrido un error: ${responseCode.status}`
         }else{
           alert("La transaction ha sido creada")
+          getTransactions(userID);
         }
         
       }catch(err){
