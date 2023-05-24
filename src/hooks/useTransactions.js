@@ -15,7 +15,7 @@ export default function useTransactions(){
       }else{
 
       try{
-        const response = await fetch(`https://localhost:7091/Transaction/${id}`,{
+        const response = await fetch(`https://finance-backend.azurewebsites.net/Transaction/${id}`,{
 
           method: "GET",
           headers: {
@@ -39,7 +39,7 @@ export default function useTransactions(){
     const postTransaction= async (transactionID,amount,categoryId,userID,date,porpuse,type) =>{
  
       try{
-        const responseCode = await fetch(`https://localhost:7091/Transaction/create/${userID}`,{
+        const responseCode = await fetch(`https://finance-backend.azurewebsites.net/Transaction/create/${userID}`,{
           method: 'POST',
           headers: {
             "Content-Type": "application/json",
