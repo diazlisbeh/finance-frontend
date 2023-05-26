@@ -9,7 +9,7 @@ function useCategories(){
 
     const getCategories = async() =>{
 
-        const response = await fetch('https://finance-backend.azurewebsites.net/Category',{
+        const response = await fetch('https://localhost:7091/Category',{
             method: "GET",
             headers: {
               "Content-Type": "application/json",

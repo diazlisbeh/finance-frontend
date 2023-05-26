@@ -6,6 +6,12 @@ import Modal from "@/Components/Modal";
 import AddForm from "@/Components/AddForm";
 import { useRouter } from "next/router";
 import { useCategories } from "@/hooks/useCategories";
+// import { DonutChart } from "@tremor/react";
+import Donutchart from "@/Components/DonutChart";
+import LineChart from "@/Components/LineChart";
+import { Card, Metric, Text } from "@tremor/react";
+
+// import mapTransaction from "@/utils/mapTransactions";
 
 
 
@@ -15,6 +21,7 @@ export default function Home(){
     const [cookies,setCookies] = useCookies(['user'])
     const {getTransactions,loaded,error} = useTransactions();
     const [isOpen, setIsOpen] = useState(false);
+    
     const router = useRouter();
     
     const {getCategories,load} = useCategories();
@@ -28,6 +35,7 @@ export default function Home(){
         if(typeof cookies.user == 'undefined'){
             router.push('/Login')
         }else setUserData(cookies.user) 
+        
 
     }, []);
     useEffect(()=>{
@@ -39,6 +47,8 @@ export default function Home(){
             router.push('/Login')
         }else{
         getTransactions(cookies.user.id)
+
+        
         
         }
     },[loaded])
@@ -52,8 +62,9 @@ export default function Home(){
              
             </nav>
             <div className="flex justify-center text-4xl py-2 font-medium">${ userData.capital}</div>
+           
         </header>
-        
+{/*        
         <section className="h-3/4">
             {loaded &&   (
                 <div className="contaner flex flex-col max-h-90 overflow-y-scroll h-96">
@@ -84,6 +95,17 @@ export default function Home(){
                 </div>
             )}
         </section>
+                */}
+
+            {transaction.length >0 &&( 
+            <Donutchart transaction={transaction}
+                        categories={categories}></Donutchart>
+            )}
+
+{transaction.length >0 &&( 
+            <LineChart transacion={transaction}></LineChart>
+            )}
+
 
         <footer className="bg-white rounded-lg shadow m-4 flex justify-around">
             <div onClick={()=> router.push('/History')} className="text-5xl"><ion-icon name="timer-outline"></ion-icon></div>

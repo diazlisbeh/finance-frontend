@@ -8,7 +8,7 @@ export  function useRegister(){
 
   const register = async (user) =>{
   try{
-    const response = await  fetch('https://finance-backend.azurewebsites.net/User/register',{
+    const response = await  fetch('https://localhost:7091/User/register',{
 
       method: "POST",
       headers: {

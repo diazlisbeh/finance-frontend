@@ -4,10 +4,12 @@ import { MyContext } from "../context/context";
 import useTransactions from "@/hooks/useTransactions";
 import { uuid } from "@/utils/generateUUID";
 import { crearFecha } from "@/utils/generateDate";
+import useAuth from "@/hooks/useAuth";
 
 function AddForm({handleModal}){
     const {categories,userData} = useContext(MyContext);
     const {getCategories,load} = useCategories();
+    const {user} = useAuth();
     
     const [transactionID, setTransactioID] = useState();
     const [amount, setAmount] = useState();
@@ -16,6 +18,7 @@ function AddForm({handleModal}){
     const [date, setDate] = useState();
     const [porpuse, setPorpuse] = useState();
     const [Type, setType] = useState();
+    const [CategoryName,setCategoryName] = useState();
     const {postTransaction} = useTransactions();
     
     useEffect(()=>{
@@ -24,6 +27,7 @@ function AddForm({handleModal}){
         setTransactioID(uuid())
         setUserID(userData.id)
         setDate(crearFecha())
+        
 
     },[load])
 
@@ -37,33 +41,41 @@ function AddForm({handleModal}){
         setTransactioID(uuid())
         setUserID(userData.id)
         setDate(Date.now())
-        console.log(transactionID) 
-        console.log(amount) 
-        console.log(categoryId) 
-        console.log(userID) 
-        console.log(date) 
-        console.log(porpuse) 
-        console.log(Type) 
-        await postTransaction(transactionID,amount,categoryId,userID,date,porpuse,Type)
+        await postTransaction(transactionID,amount,categoryId,userID,date,porpuse,Type,CategoryName)
+        await user(userData.id)
         handleModal();
     }
 
+    const categoryChange =(e) =>{
+        const id = e.target.value
+        console.log(id)
+        setCategoryId( parseInt(id))
+        console.log(categoryId)
+        const selectedCategory = categories.find((c) => c.value == id);
+        if (selectedCategory) {
+          setCategoryName(selectedCategory.name)
+          
+          console.log(CategoryName);
+        }
+        
+    }
+   
     return(
         <form className="font-bold">
             
             <label className="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Porpuse</label>
             <input type="text" placeholder="Add text" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                onChange={(e)=> setPorpuse(e.target.value)} required></input>
+                onChange={(e)=> setPorpuse(e.target.value)} required={true}></input>
             
             <label className="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Amount</label>
             <input type="number" placeholder="Add amount" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 onChange={(e)=> setAmount(parseInt(e.target.value))}></input>
             
             <label className="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Category</label>
-            <select name="Category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            onChange={(e)=> setCategoryId(parseInt( e.target.value))}>
+            <select  name="Category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 mb-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={ categoryChange}>
                {load && categories.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
+                <option key={c.id} value={c.value}>{c.name}</option>
                ))}
             </select>
             <div className="grid grid-cols-2 justify-items-center">

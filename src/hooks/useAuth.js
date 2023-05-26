@@ -1,15 +1,18 @@
+import { MyContext } from "@/context/context";
 import { useRouter } from "next/router";
+import { useContext } from "react";
 import { useCookies } from "react-cookie";
 
 export default function useAuth() {
 
   const [cookies,setCookies,removeCookies] = useCookies(['user'])
+  const {setUserData} = useContext(MyContext)
   const router = useRouter();
   
   const login = async (email, password) => {
   
     try{
-    const response = await fetch("https://finance-backend.azurewebsites.net/User/login", {
+    const response = await fetch("https://localhost:7091/User/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,9 +33,16 @@ export default function useAuth() {
     console.log(err)
   }    
   }  
-    
+    const user = async(id) =>{
+
+      const response = await fetch(`https://localhost:7091/User/${id}`)
+
+      response.json()
+      .then(data => setUserData(data))
+
+    }
       
   
-  return { login };
+  return { login,user };
 }
 
